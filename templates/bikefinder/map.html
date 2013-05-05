@@ -1,0 +1,77 @@
+{% extends 'bikefinder/base.html' %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row">
+        <div class="span12">
+            <div id="da-map-canvus" class="img-polaroid">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span9">
+            <table class="table">
+                <thead>
+                    <th> type </th>
+                    <th> name </th>
+                    <th> description </th>
+                </thead>
+                <tbody>
+                    {% for poi in points %}
+                    <tr>
+                        <td> {{poi.type.name}}</td>
+                        <td> {{poi.name}}</td>
+                        <td> {{poi.description}} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="span3">
+            <div class="row">
+                <div class="span3">
+                    <div class="well">
+                        <p> Click on a point or row to see description </p>
+                        <div class="clear"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span3">
+                    <h4> Filter </h4>
+                    <dl class="sub-nav">
+                        <dd class="label"> <a href="#"> All </a></dd>
+                        <dd class="label"> <a href="#"> Shops </a> </dd>
+                        <dd class="label"> <a href=#">  Racks </a></dd>
+                        <dd class="label"> <a href=#">  Events </a></dd>
+                        <dd class="label"> <a href=#">  special </a></dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span3">
+                    <form>
+                        <fieldset>
+                            <legend> Search  </legend>
+                                <div class="input-append">
+                                    <input type="text" class placeholder="Address: City Center"/>
+                                    <span class="add-on btn"> Find Current </span>
+                                </div>
+                                <input class="btn btn-large" type="submit" value="Search Near Address" />
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+        {% load staticfiles %}
+        <script src="{% static "js/jquery-1.9.1.min.js" %}"> </script>
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false"> </script>
+        <script src="{% static "js/map.js" %}"> </script>
+{% endblock %}

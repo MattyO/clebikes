@@ -1,0 +1,102 @@
+{% extends 'bikefinder/base.html' %}
+
+{% block content %}
+        <div class="container">
+            <div class="row">
+                <div class="span6">
+                    <form class="form" method="POST" action="{% url "bikefinder.views.submit" %}">
+                        {% csrf_token %}
+                        <fieldset>
+
+                            <legend> <h2>  Submit Bike Thing </h2> </legend>
+
+
+                            <input type="hidden" id="hdn-latitude" name="hdn-latitude" value="" />
+                            <input type="hidden" id="hdn-longitude" name="hdn-longitude" value="" /> 
+
+                            <label> Name </label>
+                            {{submit_form.name}}
+
+                            <label> Type </label>
+                            {{submit_form.type}}
+
+                            <label> Description </label>
+                            {{submit_form.description}}
+
+                            <label> Address  </label>
+                            <div class="input-append">
+                                    <input id="txt-address" name="address" class="span4 txt-address" type="text" placeholder="Address: City Center"/>
+                                    <span id="findaddress" class="btn" >Show on Map</span>
+                            </div>
+                            <input type="submit" id="main-submit" class="btn-large" value="submit"/>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="span6">
+                    <div class="map_canvas" id="da-map-canvus"> </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block script %}
+
+{% load staticfiles %}
+    <script src="{% static "js/jquery-1.9.1.min.js" %}"> </script>
+    <script src="{% static "js/jquery.uniform.js" %}"> </script>
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"> </script>
+    <script src="{% static "js/geo_finder.js" %}"> </script>
+
+    <script type="text/javascript">
+        //$("select").uniform();
+        $(document).ready(function(){
+            $("select").uniform();
+
+            var mapOptions = {
+            center: new google.maps.LatLng(41.486132, -81.705087),
+            zoom: 13,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var map = new google.maps.Map( document.getElementById("da-map-canvus"), mapOptions);
+            var current_location = null;
+
+            $("#findaddress").click(function(){
+                var address_string = $("#txt-address").val();
+                if(address_string == ""){
+                    alert("Enter something in the destinatin field");
+                    return ;
+                }
+                find_address(address_string, function(result){
+                    if( current_location != null){
+                        current_location.setMap(null);
+                    }
+
+                    $("#hdn-latitude").val(result.lat());
+                    $("#hdn-longitude").val(result.lng());
+
+                    current_location = new google.maps.Marker({
+                        position: result,
+                        draggable:true,
+                        title:"the address",
+                        map:map
+                        });
+                    map.setCenter(result);
+                }, 
+                function(error_msg){alert(error_msg)});
+            });
+
+            $("#main-submit").click(function(){
+                    if($("#hdn-latitude").val() == ""){
+                        return false;
+                    }
+
+            });
+        });
+
+    </script>
+
+
+{% endblock %}
+

@@ -1,0 +1,10 @@
+select{
+}
+
+#da-map-canvus { 
+	width: 100%; 
+	height: 300px; 
+}
+.map_canvas img {
+	    max-width: none !important;
+    }

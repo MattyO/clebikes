@@ -1,0 +1,2 @@
+class ImmutableJson():
+	pass
