@@ -4,6 +4,14 @@ from django.forms import ModelForm
 class Location(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
+    def __str__(self):
+        return "id: {2}. lat: {0}, lng: {1}".format(self.latitude, self.longitude, self.id)
+
+class Neighborhood(models.Model):
+    name = models.CharField(max_length=100)
+    location = models.ForeignKey(Location)
+    def __str__(self):
+        return self.name
 
 class POIType(models.Model):
     name = models.CharField(max_length=100)

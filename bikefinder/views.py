@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.core.context_processors import csrf
 from django import forms
 
-from bikefinder.models import Location, POI, POIType, POIForm
+from bikefinder.models import Location, POI, POIType, POIForm, Neighborhood
 from libs.immutable import ImmutableModel
 #from libs.classes import POI, Location, to_json
 
@@ -20,7 +20,10 @@ def index(request):
     render(request, "bikefinder/index.html")
 
 def map(request):
-    context = {"points":load_poi()}
+    context = {
+            "points":load_poi(),
+            "neighborhoods" : Neighborhood.objects.all() 
+            }
     return render(request, "bikefinder/map.html", context)
 
 def points_of_intrests(request):
@@ -43,17 +46,6 @@ def submit(request):
 
         else:
             print a_form.errors
-        #print request.POST
-        #print request.POST['poi_type'][0]
-        #POI.objects.create(
-        #        name = request.POST['name'], 
-        #        location = Location.objects.create(
-        #            latitude = request.POST['hdn-latitude'], 
-        #            longitude = request.POST['hdn-longitude']), 
-        #        description = request.POST['description'], 
-        #        type= POIType.objects.get(pk=request.POST['poi_type'][0]),
-        #        address = request.POST['address'],
-        #        )
         return redirect("bikefinder.views.submit")
 
     a_form = POIForm()

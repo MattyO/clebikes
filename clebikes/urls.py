@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     #url(r'^list$', 'bikefinder.views.list'),
     url(r'^poi$', 'bikefinder.views.points_of_intrests'),
     url(r'^submit$', 'bikefinder.views.submit'),
+    url(r'^neighborhood/([a-zA-Z])*$', 'bikefinder.views.neighborhood'),
     # url(r'^clebikes/', include('clebikes.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
