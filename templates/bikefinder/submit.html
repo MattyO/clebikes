@@ -49,9 +49,13 @@
     <script src="{% static "js/geo_finder.js" %}"> </script>
 
     <script type="text/javascript">
+        function update_hidden_location_fields(mouse_event){
+            $("#hdn-latitude").val(mouse_event.latLng.lat());
+            $("#hdn-longitude").val(mouse_event.latLng.lng());
+        }
         //$("select").uniform();
         $(document).ready(function(){
-            $("select").uniform();
+            //$("select").uniform();
 
             var mapOptions = {
             center: new google.maps.LatLng(41.486132, -81.705087),
@@ -83,7 +87,9 @@
                         map:map
                         });
                     map.setCenter(result);
-                }, 
+
+                    google.maps.event.addListener(current_location, "mouseup", update_hidden_location_fields)
+                },
                 function(error_msg){alert(error_msg)});
             });
 
@@ -93,7 +99,9 @@
                     }
 
             });
+
         });
+
 
     </script>
 
