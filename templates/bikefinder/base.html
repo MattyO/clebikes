@@ -28,8 +28,8 @@
                         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> Menu </a>
                         <div class="nav-collapse collapse">
                             <ul class="nav">
-                                <li> <a href=""> Home </a> </li>
-                                <li> <a href=""> Closest to Address </a> </li>
+                                <li> <a href="{% url "bikefinder.views.map" %}"> Home </a> </li>
+                                <li> <a href="{% url "bikefinder.views.search" %}"> Closest to Address </a> </li>
                                 {% if neighborhoods %}
                                 <li class="dropdown"> 
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Neighbourhoods 
@@ -44,7 +44,7 @@
                                     </ul>
                                 </li>
                                 {% endif %}
-                                <li> <a href=""> Submit a Thing</a> </li>
+                                <li> <a href="{% url "bikefinder.views.submit" %} "> Submit a Thing</a> </li>
                             </ul>
                         </div>
                     </div>

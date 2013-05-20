@@ -10,6 +10,7 @@ urlpatterns = patterns('',
 
     url(r'^$', 'bikefinder.views.map'),
     url(r'^map$', 'bikefinder.views.map'),
+    url(r'^search$', 'bikefinder.views.search'),
     #url(r'^map/(.*)$', 'bikefinder.views.map_given'),
     #url(r'^list$', 'bikefinder.views.list'),
     url(r'^poi$', 'bikefinder.views.points_of_intrests'),

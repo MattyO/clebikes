@@ -48,8 +48,11 @@ def neighborhood(request, neighborhood_name):
 
     return render(request, "bikefinder/neighborhood.html", c)
 
+def search(request):
+    pass
+
 def submit(request):
-    c = {}
+    c = standard_context()
     c.update(csrf(request))
 
     if(request.POST):
