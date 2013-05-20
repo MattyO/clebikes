@@ -6,9 +6,15 @@ from django.shortcuts import render, redirect
 from django.core.context_processors import csrf
 from django import forms
 
-from bikefinder.models import Location, POI, POIType, POIForm, Neighborhood
 from libs.immutable import ImmutableModel
+
+from bikefinder.models import Location, POI, POIType, POIForm, Neighborhood
+from bikefinder.models import sort_by_position, find_by_name
+
 #from libs.classes import POI, Location, to_json
+
+def standard_context():
+    return { "neighborhoods" : Neighborhood.objects.all() }
 
 def jsonify(object):
     json_obj =json.dumps(object, 
@@ -17,19 +23,30 @@ def jsonify(object):
     return HttpResponse(json_obj, content_type="application/json")
 
 def index(request):
+    #c = standard_context()
+    #cleveland = find_by_name(standard_context("Cleveland"))
+
     render(request, "bikefinder/index.html")
 
 def map(request):
-    context = {
-            "points":load_poi(),
-            "neighborhoods" : Neighborhood.objects.all() 
-            }
-    return render(request, "bikefinder/map.html", context)
+    c = standard_context()
+    cleveland = ImmutableModel(
+            find_by_name(c["neighborhoods"], "Cleveland"))
+
+    c.update({"points": sort_by_position(load_poi(), cleveland.location)})
+
+    return render(request, "bikefinder/map.html", c)
 
 def points_of_intrests(request):
     points = {"points" : load_poi()}
 
     return jsonify(points)
+
+def neighborhood(request, neighborhood_name):
+    c = standard_context()
+    c.update({"points":load_poi(), "neighborhood_name":neighborhood_name })
+
+    return render(request, "bikefinder/neighborhood.html", c)
 
 def submit(request):
     c = {}

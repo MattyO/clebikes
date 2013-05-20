@@ -1,0 +1,28 @@
+{% extends "bikefinder/base.html" %}
+{% block content %}
+<div class="container">
+    <h1> Points Near {{ neighborhood_name }} </h1> 
+
+    {% for n in 
+    <div class="row">
+        <div class="span12">
+            <table class="table">
+                <thead>
+                    <th> type </th>
+                    <th> name </th>
+                    <th> description </th>
+                </thead>
+                <tbody>
+                    {% for poi in points %}
+                    <tr>
+                        <td> {{poi.type.name}}</td>
+                        <td> {{poi.name}}</td>
+                        <td> {{poi.description}} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

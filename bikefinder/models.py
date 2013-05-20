@@ -1,5 +1,7 @@
 from django.db import models
 from django.forms import ModelForm
+from geopy import distance 
+from geopy.point import Point
 
 class Location(models.Model):
     latitude = models.FloatField()
@@ -30,4 +32,26 @@ class POIForm(ModelForm):
         class Meta:
             model = POI
             exclude=('location',)
+
+
+def sort_by_position(list_with_location, points_closest_to):
+    def adistance(location_one, location_two):
+        point_one = Point(location_one.latitude,location_one.longitude)
+        point_two = Point(location_two.latitude,location_two.longitude)
+        return int(distance.distance(point_one, point_two).kilometers)
+
+    return sorted(list_with_location,
+            lambda x,y:
+                adistance(x.location, points_closest_to) -
+                adistance(y.location, points_closest_to) )
+
+def find_by_name(list_with_names, name_to_find):
+    item_found = None
+    for item in list_with_names:
+        if item.name == name_to_find:
+            item_found = item
+            break
+
+    return item_found
+
 
