@@ -1,14 +1,3 @@
-function load_map() {
-    var mapOptions = {
-    center: new google.maps.LatLng(41.486132, -81.705087),
-    zoom: 13,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-
-    map = new google.maps.Map( document.getElementById("da-map-canvus"), mapOptions);
-
-}
-
 function load_points(){
     $.ajax({
         url:"poi", 
@@ -37,12 +26,3 @@ function load_points(){
 
     });
 }
-
-function update_hidden_location_fields(mouse_event){
-    $("#hdn-latitude").val(mouse_event.latLng.lat());
-    $("#hdn-longitude").val(mouse_event.latLng.lng());
-}
-
-function place_current_location(){
-}
-

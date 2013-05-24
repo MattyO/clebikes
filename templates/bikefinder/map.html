@@ -55,12 +55,11 @@
                 <div class="span3">
                     <form>
                         <fieldset>
-                            <legend> Search  </legend>
+                            <legend> Search  Near Address </legend>
                                 <div class="input-append">
-                                    <input type="text" class placeholder="Address: City Center"/>
-                                    <span class="add-on btn"> Find Current </span>
+                                    <input id="txt-address" type="text" class placeholder="Address: City Center"/>
+                                    <span id="btn-search" class="add-on btn"> Find </span>
                                 </div>
-                                <input class="btn btn-large" type="submit" value="Search Near Address" />
                         </fieldset>
                     </form>
                 </div>
@@ -72,5 +71,30 @@
 {% block script %}
         {% load staticfiles %}
         <script src="https://maps.googleapis.com/maps/api/js?sensor=false"> </script>
+        <script src="{% static "js/global_vars.js" %}"> </script>
         <script src="{% static "js/map.js" %}"> </script>
+        <script src="{% static "js/geo_finder.js" %}"> </script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                load_map();
+                load_points();
+
+                $("#btn-search").click(function(){
+                    find_address({
+                        address:$("#txt-address").val(),
+                        success:function(latLng){
+                            current_position_marker = new google.maps.Marker({
+                                position:latLng,
+                                map: map,
+                                title: "Search Around Here",
+                            });
+                        },
+                        failture:function(err_msg){
+                            alert("something bad happend");
+                        }
+                    });
+                });
+            });
+
+        </script>
 {% endblock %}

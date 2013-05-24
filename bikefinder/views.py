@@ -49,7 +49,9 @@ def neighborhood(request, neighborhood_name):
     return render(request, "bikefinder/neighborhood.html", c)
 
 def search(request):
-    pass
+    points
+    return HttpResponse(json.dumps({}), content_type="application/json")
+
 
 def submit(request):
     c = standard_context()

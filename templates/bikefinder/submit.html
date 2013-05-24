@@ -12,7 +12,7 @@
 
 
                             <input type="hidden" id="hdn-latitude" name="hdn-latitude" value="" />
-                            <input type="hidden" id="hdn-longitude" name="hdn-longitude" value="" /> 
+                            <input type="hidden" id="hdn-longitude" name="hdn-longitude" value="" />
 
                             <label> Name </label>
                             {{submit_form.name}}
@@ -46,58 +46,45 @@
     <script src="{% static "js/jquery-1.9.1.min.js" %}"> </script>
     <script src="{% static "js/jquery.uniform.js" %}"> </script>
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"> </script>
+    <script src="{% static "js/map.js" %}"> </script>
+    <script src="{% static "js/load_points.js" %}"> </script>
     <script src="{% static "js/geo_finder.js" %}"> </script>
 
     <script type="text/javascript">
-        function update_hidden_location_fields(mouse_event){
-            $("#hdn-latitude").val(mouse_event.latLng.lat());
-            $("#hdn-longitude").val(mouse_event.latLng.lng());
-        }
-        //$("select").uniform();
         $(document).ready(function(){
-            //$("select").uniform();
-
-            var mapOptions = {
-            center: new google.maps.LatLng(41.486132, -81.705087),
-            zoom: 13,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            var map = new google.maps.Map( document.getElementById("da-map-canvus"), mapOptions);
-            var current_location = null;
+            load_map();
 
             $("#findaddress").click(function(){
-                var address_string = $("#txt-address").val();
-                if(address_string == ""){
-                    alert("Enter something in the destinatin field");
-                    return ;
-                }
-                find_address(address_string, function(result){
-                    if( current_location != null){
-                        current_location.setMap(null);
-                    }
+                find_address({
+                    address: $("#txt-address").val(),
+                    success: function(result){
+                        if( current_location != null){
+                            current_location.setMap(null);
+                        }
 
-                    $("#hdn-latitude").val(result.lat());
-                    $("#hdn-longitude").val(result.lng());
+                        $("#hdn-latitude").val(result.lat());
+                        $("#hdn-longitude").val(result.lng());
 
-                    current_location = new google.maps.Marker({
-                        position: result,
-                        draggable:true,
-                        title:"the address",
-                        map:map
+                        current_position_marker  = new google.maps.Marker({
+                            position: result,
+                            draggable:true,
+                            title:"the address",
+                            map:map
                         });
-                    map.setCenter(result);
+                        map.setCenter(result);
 
-                    google.maps.event.addListener(current_location, "mouseup", update_hidden_location_fields)
-                },
-                function(error_msg){alert(error_msg)});
+                        google.maps.event.addListener(current_location, "mouseup", update_hidden_location_fields)
+                    },
+                    error:function(error_msg){
+                      alert(error_msg);
+                    }
+                });
             });
 
             $("#main-submit").click(function(){
-                    if($("#hdn-latitude").val() == ""){
-                        return false;
-                    }
-
+                if($("#hdn-latitude").val() == ""){
+                    return false;
+                }
             });
 
         });

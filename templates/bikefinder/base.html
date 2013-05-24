@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"> 
+    <head>
         {% load staticfiles %}
 
         <link rel="stylesheet" href="{% static "css/uniform.default.min.css" %}" />
@@ -8,6 +9,7 @@
         <link rel="stylesheet" href="{% static "css/erica-style.css" %}" />
         <link rel="stylesheet" href="{% static "css/orange.css" %}" />
         <link rel="stylesheet" href="{% static "css/style.css" %}" />
+    </head>
 
         <body>
             <header>
@@ -29,7 +31,6 @@
                         <div class="nav-collapse collapse">
                             <ul class="nav">
                                 <li> <a href="{% url "bikefinder.views.map" %}"> Home </a> </li>
-                                <li> <a href="{% url "bikefinder.views.search" %}"> Closest to Address </a> </li>
                                 {% if neighborhoods %}
                                 <li class="dropdown"> 
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Neighbourhoods 
@@ -52,9 +53,9 @@
             </div>
             {% block content %} {% endblock %}
         </body>
-        {% block script %} {% endblock %}
-        {% load staticfiles %}
         <script src="{% static "js/jquery-1.9.1.min.js" %}"> </script>
         <script src="{% static "js/bootstrap.min.js" %}"> </script>
+        {% block script %} {% endblock %}
+        {% load staticfiles %}
 
 </html>
