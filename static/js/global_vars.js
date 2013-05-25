@@ -1,3 +1,3 @@
 var map = null;
 var current_position = null;
-var other_points = Array();
+var points_array = Array();

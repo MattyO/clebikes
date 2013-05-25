@@ -7,6 +7,7 @@ from django.core.context_processors import csrf
 from django import forms
 
 from libs.immutable import ImmutableModel
+import libs.immutable as immutable 
 
 from bikefinder.models import Location, POI, POIType, POIForm, Neighborhood
 from bikefinder.models import sort_by_position, find_by_name
@@ -37,9 +38,18 @@ def map(request):
 
     return render(request, "bikefinder/map.html", c)
 
-def points_of_intrests(request):
-    points = {"points" : load_poi()}
+def is_location(an_object):
+    return hasattr(an_object,"latitude") and hasattr(an_object,"longitude")
 
+def points_of_intrests(request):
+
+    points = load_poi()
+
+    query_args = immutable.create(request.GET)
+    if is_location(query_args):
+        points = sort_by_position(points, query_args)
+
+    points = {"points" : points}
     return jsonify(points)
 
 def neighborhood(request, neighborhood_name):

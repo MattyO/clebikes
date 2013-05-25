@@ -1,10 +1,10 @@
-function load_points(){
+function load_points(data){
     $.ajax({
         url:"poi", 
         dataType:"json",
         mimeType:"json",
+        data: data,
         success:function(data){
-            alert(map);
             //data = JSON.parse(data);
 
             //var marker_image = new google.maps.Symbol({path:"http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|00FF00"});
