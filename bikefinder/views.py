@@ -34,7 +34,10 @@ def index(request):
 def map(request):
     c = standard_context()
     cleveland = find_by_name(c["neighborhoods"], "Cleveland")
-    points = sort_by_position(db.get_confirmed_pois(), cleveland.location)
+    points = db.get_confirmed_pois()
+
+    if cleveland is not None
+        points = sort_by_position(points, cleveland.location)
 
     c.update({"points": points })
 
