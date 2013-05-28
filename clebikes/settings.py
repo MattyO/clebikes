@@ -1,6 +1,9 @@
 from os.path import dirname, abspath, join
 # Django settings for clebikes project.
 
+TEST_RUNNER = 'clebikes.test_runner.AppTestSuiteRunner'
+TEST_IGNORE_APPS = ('django', 'lettuce', 'south')
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
