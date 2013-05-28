@@ -36,7 +36,7 @@ def map(request):
     cleveland = find_by_name(c["neighborhoods"], "Cleveland")
     points = db.get_confirmed_pois()
 
-    if cleveland is not None
+    if cleveland is not None:
         points = sort_by_position(points, cleveland.location)
 
     c.update({"points": points })
