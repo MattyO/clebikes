@@ -8,42 +8,41 @@ from django import forms
 
 from libs.immutable import ImmutableModel
 import libs.immutable as immutable 
+import libs.db as db
 
 from bikefinder.models import Location, POI, POIType, POIForm, Neighborhood
-from bikefinder.models import sort_by_position, find_by_name
+from bikefinder.models import sort_by_position, find_by_name, is_location
 
 #from libs.classes import POI, Location, to_json
 
 def standard_context():
-    return { "neighborhoods" : Neighborhood.objects.all() }
+    print db.get_neighborhoods()
+    return { "neighborhoods" : db.get_neighborhoods() }
 
 def jsonify(object):
     json_obj =json.dumps(object, 
-                default=lambda instance: instance.__dict__) 
+                default=lambda instance: instance.__dict__)
 
     return HttpResponse(json_obj, content_type="application/json")
 
 def index(request):
-    #c = standard_context()
-    #cleveland = find_by_name(standard_context("Cleveland"))
+    c = standard_context()
+    cleveland = find_by_name(standard_context['neighborhoods'], "Cleveland")
 
     render(request, "bikefinder/index.html")
 
 def map(request):
     c = standard_context()
-    cleveland = ImmutableModel(
-            find_by_name(c["neighborhoods"], "Cleveland"))
+    cleveland = find_by_name(c["neighborhoods"], "Cleveland")
+    points = sort_by_position(db.get_confirmed_pois(), cleveland.location)
 
-    c.update({"points": sort_by_position(load_poi(), cleveland.location)})
+    c.update({"points": points })
 
     return render(request, "bikefinder/map.html", c)
 
-def is_location(an_object):
-    return hasattr(an_object,"latitude") and hasattr(an_object,"longitude")
-
 def points_of_intrests(request):
 
-    points = load_poi()
+    points = db.get_confirmed_pois()
 
     query_args = immutable.create(request.GET)
     if is_location(query_args):
@@ -54,7 +53,10 @@ def points_of_intrests(request):
 
 def neighborhood(request, neighborhood_name):
     c = standard_context()
-    c.update({"points":load_poi(), "neighborhood_name":neighborhood_name })
+    neighborhoods = find_by_name(db.get_neighborhoods())
+    points = db.get_confirmed_pois()
+
+    c.update({"points":points , "neighborhood_name":neighborhood_name })
 
     return render(request, "bikefinder/neighborhood.html", c)
 
@@ -75,7 +77,6 @@ def submit(request):
                     latitude = request.POST['hdn-latitude'], 
                     longitude = request.POST['hdn-longitude'])
             new_poi.save()
-
         else:
             print a_form.errors
         return redirect("bikefinder.views.submit")
@@ -86,10 +87,4 @@ def submit(request):
 
     c.update({ "submit_form" : a_form })
     return render(request, "bikefinder/submit.html", c)
-
-def get_confirmed_pois():
-    return POI.objects.filter(is_confirmed__exact=True)
-
-def load_poi():
-    return [ ImmutableModel(poi_object) for poi_object in get_confirmed_pois() ]
 

@@ -54,4 +54,5 @@ def find_by_name(list_with_names, name_to_find):
 
     return item_found
 
-
+def is_location(an_object):
+    return hasattr(an_object,"latitude") and hasattr(an_object,"longitude")
