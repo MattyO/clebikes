@@ -13,18 +13,12 @@
         <div class="span9">
             <table class="table poi-table">
                 <thead>
+                    <th> label </th>
                     <th> type </th>
                     <th> name </th>
                     <th> description </th>
                 </thead>
                 <tbody>
-                    {% for poi in points %}
-                    <tr>
-                        <td> {{ poi.type.name }}</td>
-                        <td> {{ poi.name }} </td>
-                        <td> {{ poi.description }} </td>
-                    </tr>
-                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -81,6 +75,7 @@
                 get_points({
                     success:function(data){
                         add_points_to_map(data.points)
+                        add_points_to_list(data.points);
                     }
                 });
 
@@ -94,6 +89,7 @@
                                 title: "Search Around Here",
                             });
                             remove_points_from_map();
+                            remove_points_from_list();
                             get_points({
                                 queryData:{
                                     latitude:latLng.lat(), 
@@ -102,7 +98,8 @@
 
                                 },
                                 success:function(data){
-                                    add_points_to_map(data.points)
+                                    add_points_to_map(data.points);
+                                    add_points_to_list(data.points);
                                 }
                             });
                         },
