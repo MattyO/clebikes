@@ -16,7 +16,6 @@ from bikefinder.models import sort_by_position, find_by_name, is_location
 #from libs.classes import POI, Location, to_json
 
 def standard_context():
-    print db.get_neighborhoods()
     return { "neighborhoods" : db.get_neighborhoods() }
 
 def jsonify(object):
@@ -33,6 +32,7 @@ def index(request):
 
 def map(request):
     c = standard_context()
+
     cleveland = find_by_name(c["neighborhoods"], "Cleveland")
     points = db.get_confirmed_pois()
 
