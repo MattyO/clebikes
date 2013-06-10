@@ -31,20 +31,18 @@
                         <div class="nav-collapse collapse">
                             <ul class="nav">
                                 <li> <a href="{% url "bikefinder.views.map" %}"> Home </a> </li>
-                                {% if neighborhoods %}
                                 <li class="dropdown"> 
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Neighbourhoods 
                                         <b class="caret"></b>
                                     </a>
                                     <ul class="dropdown-menu"> 
                                         {% for neighborhood in neighborhoods %}
-                                        <li >
+                                        <li>
                                             <a href="{% url "bikefinder.views.neighborhood" neighborhood.name %}"> {{neighborhood.name}} </a>
                                         </li>
                                         {% endfor %}
                                     </ul>
                                 </li>
-                                {% endif %}
                                 <li> <a href="{% url "bikefinder.views.submit" %} "> Submit a Thing</a> </li>
                             </ul>
                         </div>

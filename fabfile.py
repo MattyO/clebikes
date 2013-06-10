@@ -13,7 +13,7 @@ def upgrade():
         run("git pull")
         put("clebikes/prod-settings.py", "clebikes/settings.py")
         run("killall gunicorn")
-        run("source ../env/bin/activate && gunicorn clebikes.wsgi:application -D -w 4 --log-file gunicorn.log")
+        run("../env/bin/gunicorn clebikes.wsgi:application -D -w 4 --log-file gunicorn.log")
         run("uname -s")
 
 
