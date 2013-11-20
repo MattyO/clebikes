@@ -35,6 +35,9 @@ class POIForm(ModelForm):
 
 
 def sort_by_position(list_with_location, points_closest_to):
+    if points_closest_to is None:
+        return list_with_location
+
     def adistance(location_one, location_two):
         point_one = Point(location_one.latitude,location_one.longitude)
         point_two = Point(location_two.latitude,location_two.longitude)
@@ -56,3 +59,6 @@ def find_by_name(list_with_names, name_to_find):
 
 def is_location(an_object):
     return hasattr(an_object,"latitude") and hasattr(an_object,"longitude")
+
+def get_location(an_object):
+    return getattr(an_object, "location", None)

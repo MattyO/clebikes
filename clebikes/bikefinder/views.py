@@ -9,20 +9,20 @@ from django import forms
 from libs.immutable import ImmutableModel
 import libs.immutable as immutable 
 import libs.db as db
+import libs.request_helpers as request_helpers 
 
 from bikefinder.models import Location, POI, POIType, POIForm, Neighborhood
 from bikefinder.models import sort_by_position, find_by_name, is_location
+from changeless.methods import to_json
+from changeless.types import FancyHash
 
 #from libs.classes import POI, Location, to_json
 
 def standard_context():
-    return { "neighborhoods" : db.get_neighborhoods() }
+    return FanyHash({ "neighborhoods" : db.get_neighborhoods() })
 
-def jsonify(object):
-    json_obj =json.dumps(object, 
-                default=lambda instance: instance.__dict__)
-
-    return HttpResponse(json_obj, content_type="application/json")
+def jsonify(an_object):
+    return HttpResponse(to_json(an_object), content_type="application/json")
 
 def index(request):
     c = standard_context()
@@ -34,10 +34,9 @@ def map(request):
     c = standard_context()
 
     cleveland = find_by_name(c["neighborhoods"], "Cleveland")
-    points = db.get_confirmed_pois()
 
-    if cleveland is not None:
-        points = sort_by_position(points, cleveland.location)
+    points = db.get_confirmed_pois()
+    points = sort_by_position(points, get_location(cleveland))
 
     c.update({"points": points })
 
@@ -46,12 +45,10 @@ def map(request):
 def points_of_intrests(request):
 
     points = db.get_confirmed_pois()
+    location = request_helper.get_location(request.GET)
+    points = sort_by_position(points, location)
 
-    query_args = immutable.create(request.GET)
-    if is_location(query_args):
-        points = sort_by_position(points, query_args)
-
-    points = {"points" : points}
+    points = FancyHash({"points" : points})
     return jsonify(points)
 
 def neighborhood(request, neighborhood_name):
@@ -64,7 +61,6 @@ def neighborhood(request, neighborhood_name):
     return render(request, "bikefinder/neighborhood.html", c)
 
 def search(request):
-    points
     return HttpResponse(json.dumps({}), content_type="application/json")
 
 
@@ -74,14 +70,14 @@ def submit(request):
 
     if(request.POST):
         a_form = POIForm(request.POST)
-        if(a_form.is_valid()):
+        if form_helper.isvalid(POIFORM, request.POST): if(a_form.is_valid()):
+            db.save_poi( request.POST, request_helper.get_location())
+
             new_poi = a_form.save(commit=False)
             new_poi.location = Location.objects.create(
                     latitude = request.POST['hdn-latitude'], 
                     longitude = request.POST['hdn-longitude'])
             new_poi.save()
-        else:
-            print a_form.errors
         return redirect("bikefinder.views.submit")
 
     a_form = POIForm()
