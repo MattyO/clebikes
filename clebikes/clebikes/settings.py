@@ -5,7 +5,7 @@ from os.path import dirname, abspath, join
 TEST_RUNNER = 'clebikes.test_runner.AppTestSuiteRunner'
 TEST_IGNORE_APPS = ('django', 'lettuce', 'south')
 
-DEBUG = True
+DEBUG = os.environ['CLEBIKES_DJANGO_DEBUG']
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -16,13 +16,13 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.'+os.environ['DB_ENGINE'], # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.environ['DB_NAME'],                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.'+os.environ['CLEBIKES_DB_ENGINE'], # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.environ['CLEBIKES_DB_NAME'],                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASSWORD'],
-        'HOST': os.environ['DB_HOST'],                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': os.environ['DB_PORT'],                      # Set to empty string for default.
+        'USER': os.environ['CLEBIKES_DB_USER'],
+        'PASSWORD': os.environ['CLEBIKES_DB_PASSWORD'],
+        'HOST': os.environ['CLEBIKES_DB_HOST'],                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': os.environ['CLEBIKES_DB_PORT'],                      # Set to empty string for default.
     }
 }
 
