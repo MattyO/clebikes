@@ -5,6 +5,9 @@ from os.path import dirname, abspath, join
 TEST_RUNNER = 'clebikes.test_runner.AppTestSuiteRunner'
 TEST_IGNORE_APPS = ('django', 'lettuce', 'south')
 
+
+
+
 DEBUG = os.environ['CLEBIKES_DEBUG'] == 'True'
 TEMPLATE_DEBUG = DEBUG
 
