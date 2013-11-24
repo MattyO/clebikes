@@ -13,15 +13,15 @@ function load_map() {
 }
 
 function add_points_to_map(points){
-            for(key in points ){
-                var a_point = points[key];
-                points_array.push(new google.maps.Marker({
-                    icon: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld="+indexToChar(key)+"|00FF00|000000",
-                    position: new google.maps.LatLng( a_point.location.latitude, a_point.location.longitude), 
-                    map:map, 
-                    title:a_point.name,
-                }));
-            }
+    for(key in points ){
+        var a_point = points[key];
+        points_array.push(new google.maps.Marker({
+            icon: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld="+indexToChar(key)+"|00FF00|000000",
+            position: new google.maps.LatLng( a_point.location.latitude, a_point.location.longitude), 
+            map:map, 
+            title:a_point.name,
+        }));
+    }
 }
 
 function remove_points_from_map(){
@@ -38,19 +38,24 @@ function remove_points_from_list(){
 function add_points_to_list( points ){
     var bodyElement = $(".poi-table tbody");
     var currentRow = null;
-    $.each(points, function(index, value){
+    if(points.length > 0){
+        $.each(points, function(index, value){
+            currentRow = bodyElement.append("<tr> </tr>");
+            currentRow.append("<td>" + indexToChar(index) + "</td>");
+            currentRow.append("<td>" + value.type.name + "</td>");
+            currentRow.append("<td>" + value.name + "</td>");
+            currentRow.append("<td>" + value.description + "</td>");
+        });
+    }else{
         currentRow = bodyElement.append("<tr> </tr>");
-        currentRow.append("<td>" + indexToChar(index) + "</td>");
-        currentRow.append("<td>" + value.type.name + "</td>");
-        currentRow.append("<td>" + value.name + "</td>");
-        currentRow.append("<td>" + value.description + "</td>");
-    });
+        currentRow.append("<td>No Points loaded</td>");
+    }
 }
 
 
-function get_points(args={}){
+function get_points(args){
     $.ajax({
-        url:"poi", 
+        url:"poi",
         dataType:"json",
         mimeType:"json",
         data: args.queryData,
@@ -58,7 +63,7 @@ function get_points(args={}){
             args.success(data)
         },
         error:function(request, text_status, error){
-            alert(text_status);
+            console.log("an error happened getting the pois");
         }
 
     });
