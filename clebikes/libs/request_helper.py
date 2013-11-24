@@ -1,8 +1,12 @@
+from changeless.types import FancyHash
 def get_location(request_obj):
-    return FancyHash({
-        "location": { 
-            'latitude':request_obj['latitude'],
-            'longitude':request_obj['longitude']
-            }
+    location = None
+    if 'latitude' in request_obj.keys():
+        location =  FancyHash({
+            "location": { 
+                'latitude':request_obj['latitude'],
+                'longitude':request_obj['longitude']
+                }
         })
 
+    return location
