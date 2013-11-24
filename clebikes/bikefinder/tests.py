@@ -8,7 +8,7 @@ Replace this with more appropriate tests for your application.
 from django.test import TestCase
 from bikefinder.models import Neighborhood, Location
 import libs.db as db
-from libs.immutable.model import ImmutableModel
+from changeless.types import ImmutableModel
 
 class ModelTests(TestCase):
     def test_get_neighborhoods_are_immutable(self):
