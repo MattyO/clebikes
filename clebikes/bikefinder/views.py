@@ -52,10 +52,10 @@ def points_of_intrests(request):
 
 def neighborhood(request, neighborhood_name):
     c = standard_context()
-    neighborhoods = find_by_name(db.get_neighborhoods())
+    neighborhood = find_by_name(db.get_neighborhoods(), neighborhood_name)
     points = db.get_confirmed_pois()
 
-    c.update({"points":points , "neighborhood_name":neighborhood_name })
+    c.update({"points":points , "neighborhood":neighborhood })
 
     return render(request, "bikefinder/neighborhood.html", c)
 
