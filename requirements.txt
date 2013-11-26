@@ -3,3 +3,4 @@ Django==1.5.1
 geopy==0.95.1
 wsgiref==0.1.2
 gunicorn
+mysql-python
