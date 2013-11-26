@@ -9,4 +9,3 @@ def get_confirmed_pois():
 def get_neighborhoods():
     return Neighborhood.objects.all()
 
-

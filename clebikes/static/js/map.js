@@ -13,8 +13,10 @@ function load_map() {
 }
 
 function add_points_to_map(points){
-    for(key in points ){
+    for( key in points ){
         var a_point = points[key];
+        console.log("point to map");
+        console.log(a_point);
         points_array.push(new google.maps.Marker({
             icon: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld="+indexToChar(key)+"|00FF00|000000",
             position: new google.maps.LatLng( a_point.location.latitude, a_point.location.longitude), 
@@ -63,6 +65,8 @@ function get_points(args){
             args.success(data)
         },
         error:function(request, text_status, error){
+            console.log(text_status);
+            console.log(error);
             console.log("an error happened getting the pois");
         }
 

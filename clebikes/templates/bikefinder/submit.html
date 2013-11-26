@@ -2,6 +2,7 @@
 
 {% block content %}
         <div class="container">
+	{{ submit_form.message.errors}}
             <div class="row">
                 <div class="span6">
                     <form class="form" method="POST" action="{% url "bikefinder.views.submit" %}">
