@@ -1,5 +1,6 @@
 # Create your views here.
 import json 
+import types
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -11,7 +12,7 @@ import libs.request_helper as request_helper
 #import libs.form_helper as form_helper
 
 from bikefinder.models import Location, POI, POIType, POIForm, Neighborhood
-from bikefinder.models import sort_by_position, find_by_name, is_location,get_location
+from bikefinder.models import sort_by_position, find_by_name, is_location, get_location
 from changeless.types import FancyHash
 from changeless.methods import to_json, to_dict
 
@@ -22,6 +23,16 @@ def standard_context():
 
 def jsonify(an_object):
     return HttpResponse(json.dumps(an_object), content_type="application/json")
+
+def resolve_http_method(request, methods):
+    '''Thinking this method is pasted a list of methods or the dictonary returned from the 
+    python core function locals.  However any dictonary with function objects will do 
+    which gives it a nice amount of scoping and configurablity
+    '''
+    if isinstance(methods, types.ListType):
+        methods = { a_function.__name__ : a_function for a_function in methods }
+    return methods[request.method.lower()]()
+
 
 def index(request):
     c = standard_context()
@@ -69,27 +80,25 @@ def submit(request):
     c = standard_context()
     c.update(csrf(request))
     a_form = POIForm()
-    if request.POST:
+    a_form.fields['name'].widget = forms.TextInput(attrs={"class":"span6"})
+    a_form.fields['description'].widget = forms.Textarea(attrs={"class":"span6", "rows":"5", "cols":"80"})
+    c.update({ "submit_form" : a_form })
+
+    def post():
         a_form = POIForm(request.POST)
         if a_form.is_valid(): 
-            print a_form.errors
-
-            #make it more funcation with the line below if you feel like it
-            #db.save_poi( request.POST, request_helper.get_location())
-
             new_poi = a_form.save(commit=False)
             new_poi.location = Location.objects.create(
-                    latitude = request.POST['hdn-latitude'], 
+                    latitude = request.POST['hdn-latitude'],
                     longitude = request.POST['hdn-longitude'])
             new_poi.save()
             return redirect("bikefinder.views.submit")
-        else: 
-            print "is not valid"
-            print a_form.errors
 
-    a_form.fields['name'].widget = forms.TextInput(attrs={"class":"span6"})
-    a_form.fields['description'].widget = forms.Textarea(attrs={"class":"span6", "rows":"5", "cols":"80"})
+        return render(request, "bikefinder/submit.html", c)
 
-    c.update({ "submit_form" : a_form })
-    return render(request, "bikefinder/submit.html", c)
+
+    def get():
+        return render(request, "bikefinder/submit.html", c)
+
+    return resolve_http_method(request, [get, post])
 
