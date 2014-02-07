@@ -6,43 +6,41 @@ var mapOptions = {
     mapTypeId: google.maps.MapTypeId.ROADMAP
 };
 
-function find_address(args){
-    geocoder.geocode({"address":args.address}, function(results, status){
-        console.log(args);
-        if(!args.address){
-            console.log('address is nothing returning');
-            args.success({});
-        }
-        if(status == google.maps.GeocoderStatus.OK){
-            if(results.length > 0){
-                var latLng = results[0].geometry.location
-                args.success({
-                    latitude:latLng.lat(), 
-                    longitude:latLng.lng(),
-                });
-            }else{
-                args.failture("We couldn't find a location for this address");
-            }
-        }else{
-            args.failture("something went wrong with the request to google");
-        }
-    });
-}
 
 bikeApp.controller('bikeAppCtrl', function($scope, $http, $q){
+    function find_address(address){
+        var deferred = $q.defer();
+        if(!address){
+            deferred.resolve(null, null);
+        }
+        geocoder.geocode({"address":address}, function(results, status){
+            if(status == google.maps.GeocoderStatus.OK){
+                if(results.length > 0){
+                    var latLng = results[0].geometry.location
+                    deferred.resolve(latLng.lat(), latLng.lng())
+                }else{
+                    deferred.reject("We couldn't find a location for this address");
+                }
+            }else{
+                deferred.reject("something went wrong with the request to google");
+            }
+        });
+        return deferred.promise
+    }
 
     $scope.map = new google.maps.Map( document.getElementById("da-map-canvus"), mapOptions);
     $scope.points = [];
     $scope.serachAddress = null;
-    $scope.serachPosition = null;
-    $scope.currentPosition = null;
     $scope.update = function(){
-        find_address({
-            address: $scope.searchAddress, 
-            success: function(queryArgs){
-                queryArgs.type = 'all';
-                $http({method: 'GET', url: '/poi', responseType:'json', data:queryArgs }).
-                    success(function(data, status, headers, config){
+        find_address($scope.searchAddress).then(function(lat, lng){
+                queryArgs = {
+                    type: 'all',
+                    latitude: lat,
+                    longitude: lng
+                }
+
+                $http({method: 'GET', url: '/poi', responseType:'json', data:queryArgs })
+                    .success(function(data, status, headers, config){
                         var counter = 0;
                         _.each($scope.points, function(point){
                             point.marker.setMap(null);
@@ -58,9 +56,7 @@ bikeApp.controller('bikeAppCtrl', function($scope, $http, $q){
                             return point;
                         });
                 });
-            },
-            failture: function(errorMsg){}
-        });
+            });
     };
     $scope.update();
 })
