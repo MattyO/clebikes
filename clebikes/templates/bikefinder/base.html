@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en" ng-app="bikeApp"> 
     <head>
         {% load staticfiles %}
 
@@ -9,6 +9,13 @@
         <link rel="stylesheet" href="{% static "css/erica-style.css" %}" />
         <link rel="stylesheet" href="{% static "css/orange.css" %}" />
         <link rel="stylesheet" href="{% static "css/style.css" %}" />
+
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false"> </script>
+        <script src="{% static "js/underscore-min.js" %}"> </script>
+        <script src="{% static "js/angular.min.js" %}"> </script>
+        <script src="{% static "js/app/controller.js" %}"> </script>
+	 
+
     </head>
 
         <body>

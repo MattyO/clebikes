@@ -1,7 +1,7 @@
 {% extends 'bikefinder/base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container" ng-controller="bikeAppCtrl">
 
     <div class="row">
         <div class="span12">
@@ -19,12 +19,21 @@
                     <th> description </th>
                 </thead>
                 <tbody>
+			<tr ng-repeat="point in points"> 
+				{% verbatim %}
+				<td> {{$index+1}} </td>
+				<td> {{point.type.name}} </td>
+				<td> {{point.name}} </td>
+				<th> {{point.description}} </th>
+				{% endverbatim %}
+			</tr>
                 </tbody>
             </table>
         </div>
 
 
         <div class="span3">
+	<!-- 
             <div class="row">
                 <div class="span3">
                     <div class="well">
@@ -45,14 +54,15 @@
                     </dl>
                 </div>
             </div>
+	    --!>
             <div class="row">
                 <div class="span3">
                     <form>
                         <fieldset>
                             <legend> Search  Near Address </legend>
                                 <div class="input-append">
-                                    <input id="txt-address" type="text" class placeholder="Address: City Center"/>
-                                    <span id="btn-search" class="add-on btn"> Find </span>
+                                    <input id="txt-address" type="text" class placeholder="Address: City Center" ng-model="searchAddress"/>
+                                    <span id="btn-search" class="add-on btn" ng-click='update()'> Find </span>
                                 </div>
                         </fieldset>
                     </form>
@@ -63,53 +73,48 @@
 {% endblock %}
 
 {% block script %}
-        {% load staticfiles %}
-        <script src="https://maps.googleapis.com/maps/api/js?sensor=false"> </script>
-        <script src="{% static "js/global_vars.js" %}"> </script>
-        <script src="{% static "js/map.js" %}"> </script>
-        <script src="{% static "js/geo_finder.js" %}"> </script>
         <script type="text/javascript">
 
-            $(document).ready(function(){
-                load_map();
-                get_points({
-                    success:function(data){
-			console.log(data.points);
-                        add_points_to_map(data.points)
-                        add_points_to_list(data.points);
-                    }
-                });
+            //$(document).ready(function(){
+            //    load_map();
+            //    get_points({
+            //        success:function(data){
+	    //    	console.log(data.points);
+            //            add_points_to_map(data.points)
+            //            add_points_to_list(data.points);
+            //        }
+            //    });
 
-                $("#btn-search").click(function(){
-                    find_address({
-                        address:$("#txt-address").val(),
-                        success:function(latLng){
-                            current_position_marker = new google.maps.Marker({
-                                position:latLng,
-                                map: map,
-                                title: "Search Around Here",
-                            });
-                            remove_points_from_map();
-                            remove_points_from_list();
-                            get_points({
-                                queryData:{
-                                    latitude:latLng.lat(), 
-                                    longitude:latLng.lng(), 
-                                    type:"all",
+            //    $("#btn-search").click(function(){
+            //        find_address({
+            //            address:$("#txt-address").val(),
+            //            success:function(latLng){
+            //                current_position_marker = new google.maps.Marker({
+            //                    position:latLng,
+            //                    map: map,
+            //                    title: "Search Around Here",
+            //                });
+            //                remove_points_from_map();
+            //                remove_points_from_list();
+            //                get_points({
+            //                    queryData:{
+            //                        latitude:latLng.lat(), 
+            //                        longitude:latLng.lng(), 
+            //                        type:"all",
 
-                                },
-                                success:function(data){
-                                    add_points_to_map(data.points);
-                                    add_points_to_list(data.points);
-                                }
-                            });
-                        },
-                        failture:function(err_msg){
-                            alert("something bad happend");
-                        }
-                    });
-                });
-            });
+            //                    },
+            //                    success:function(data){
+            //                        add_points_to_map(data.points);
+            //                        add_points_to_list(data.points);
+            //                    }
+            //                });
+            //            },
+            //            failture:function(err_msg){
+            //                alert("something bad happend");
+            //            }
+            //        });
+            //    });
+            //});
 
         </script>
 {% endblock %}
