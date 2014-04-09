@@ -4,7 +4,7 @@
         <div class="container">
 	{{ submit_form.errors}}
             <div class="row">
-                <div class="span6">
+                <div class="col-md-6">
                     <form class="form" method="POST" action="{% url "bikefinder.views.submit" %}">
                         {% csrf_token %}
                         <fieldset>
@@ -14,36 +14,44 @@
 
                             <input type="hidden" id="hdn-latitude" name="hdn-latitude" value="" />
                             <input type="hidden" id="hdn-longitude" name="hdn-longitude" value="" />
+                            <div class="form-group">
+                              <label> Name </label>
+                              {{submit_form.name}}
+                            </div>
 
-                            <label> Name </label>
-                            {{submit_form.name}}
+                            <div class="form-group">
+                              <label> Type </label>
+                              {{submit_form.type}}
+                            </div>
 
-                            <label> Type </label>
-                            {{submit_form.type}}
-
-                            <div id="datetimepicker1" class="input-append date" style="display: none" >
+                            <div id="time-group" class="form-group" style="display: none">
                               <label> Time </label>
-                              {{submit_form.time}}
-                               <span class="add-on">
-                                  <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                              </span>
+                              <div id="datetimepicker1" class='input-group date' data-date-format="YYYY-MM-DD HH:mm:ss" >
+                                {{submit_form.time}}
+                                <span class="input-group-addon">
+                                  <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                              </div>
                             </div>
-<span class="glyphicon glyphicon-search"></span>
 
-                            <label> Description </label>
-                            {{submit_form.description}}
-
-                            <label> Address  </label>
-                            <div class="input-append">
-                                    <input id="txt-address" name="address" class="span4 txt-address" type="text" placeholder="Address: City Center"/>
-                                    <span id="findaddress" class="btn" >Show on Map</span>
+                            <div class="form-group">
+                              <label> Description </label>
+                              {{submit_form.description}}
                             </div>
-                            <input type="submit" id="main-submit" class="btn-large" value="submit"/>
+
+                            <div class="form-group">
+                              <label> Address  </label>
+                              <div class="input-group">
+                                      <input id="txt-address" name="address" class="form-control txt-address" type="text" placeholder="Address: City Center"/>
+                                      <span id="findaddress" class="input-group-addon" >Show on Map</span>
+                              </div>
+                            </div>
+                            <input type="submit" id="main-submit" class="btn btn-primary" value="submit"/>
                         </fieldset>
                     </form>
                 </div>
 
-                <div class="span6">
+                <div class="col-md-6">
                     <div class="map_canvas" id="da-map-canvus"> </div>
                 </div>
             </div>
@@ -55,30 +63,30 @@
 {% block script %}
 
 {% load staticfiles %}
-    <script src="{% static "js/jquery-1.9.1.min.js" %}"> </script>
     <script src="{% static "js/jquery.uniform.js" %}"> </script>
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"> </script>
     <script src="{% static "js/global_vars.js" %}"> </script>
     <script src="{% static "js/map.js" %}"> </script>
     <script src="{% static "js/load_points.js" %}"> </script>
     <script src="{% static "js/geo_finder.js" %}"> </script>
-    
+
+    <script src="{% static "js/moment.min.js" %}"> </script>
     <script src="{% static "js/bootstrap-datetimepicker.min.js" %}"> </script>
 
     <script type="text/javascript">
         $(document).ready(function(){
-            
+
             $("#datetimepicker1").datetimepicker();
             console.log($("#id_type").find(":selected").text());
             if($("#id_type :selected").text().toLowerCase() == "event"){
-                $("#datetimepicker1").css("display", "block");
+                $("#time-group").css("display", "block");
             }
             $("#id_type").change(function(){
               if($(this).find(":selected").text().toLowerCase() != "event"){
-                $("#datetimepicker1").css("display", "none");
+                $("#time-group").css("display", "none");
               }else{
-                $("#datetimepicker1").css("display", "block");
-                $("#datetimepicker1").datetimepicker();
+                $("#time-group").css("display", "block");
+                //$("#datetimepicker1").datetimepicker();
               }
             })
 

@@ -1,3 +1,14 @@
+body{
+	color: #444;
+	margin: 0px;
+	padding: 0px;
+	font-family: "Oswald", sans-serif;
+	background: url('../img/body-back.png') repeat;
+	border-top: 3px solid #e24e35
+}
+h1, h2, h3, h4, h5, h6{
+	color: #666;
+}
 select{
 }
 
@@ -9,3 +20,24 @@ select{
 .map_canvas img {
 	    max-width: none !important;
     }
+
+header{
+padding: 25px 0px 0px 0px;
+background: url('../img/header-back.png') repeat;
+}
+.navbar-default{
+background-color: rgb(226, 78, 53);
+}
+.navbar-default .navbar-nav > li > a{
+	color: white;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus{
+background-color: rgb(226, 78, 53);
+color: white;
+}
+.dropdown-menu{
+	background: #e24e35
+}
+.bootstrap-datetimepicker-widget.dropdown-menu{
+background-color: white ;
+}

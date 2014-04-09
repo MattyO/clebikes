@@ -37,7 +37,7 @@ class POIForm(ModelForm):
             model = POI
             exclude=('location',)
             #widgets = {
-            #        "time": admin_widgets.AdminSplitDateTime(),
+            #        "time": widgets.TextInput(attrs=),
             #        }
 
 

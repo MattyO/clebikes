@@ -4,18 +4,19 @@
         {% load staticfiles %}
 
         <link rel="stylesheet" href="{% static "css/uniform.default.min.css" %}" />
-        <link rel="stylesheet" href="{% static "css/bootstrap.css" %}" />
-        <link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}" />
-        <link rel="stylesheet" href="{% static "css/erica-style.css" %}" />
-        <link rel="stylesheet" href="{% static "css/orange.css" %}" />
-        <link rel="stylesheet" href="{% static "css/style.css" %}" />
+        <link rel="stylesheet" href="{% static "bootstrap-3.1.1/css/bootstrap.css" %}" />
+        <link rel="stylesheet" href="{% static "bootstrap-3.1.1/css/bootstrap-responsive.css" %}" />
+        <!-- <link rel="stylesheet" href="{% static "css/erica-style.css" %}" /> -->
+        <!-- <link rel="stylesheet" href="{% static "css/orange.css" %}" /> -->
         <link rel="stylesheet" href="{% static "css/bootstrap-datetimepicker.min.css" %}" />
+        <link rel="stylesheet" href="{% static "css/style.css" %}" />
 
         <script src="https://maps.googleapis.com/maps/api/js?sensor=false"> </script>
         <script src="{% static "js/underscore-min.js" %}"> </script>
         <script src="{% static "js/angular.min.js" %}"> </script>
+        <script src="{% static "js/jquery-1.9.1.min.js" %}"> </script>
+        <script src="{% static "bootstrap-3.1.1/js/bootstrap.min.js" %}"> </script>
         <script src="{% static "js/app/controller.js" %}"> </script>
-        <script src="{% static "bootstrap/bootstrap/js/bootstrap.min.js" %}"> </script>
 	 
 
     </head>
@@ -24,44 +25,39 @@
             <header>
                 <div class="container"> 
                     <div class="row">
-                        <div class="span3">
+                        <div class="col-md-3">
                             <h1> CLE-Bikes </h1>
                         </div>
-                        <div class="span9">
+                        <div class="col-md-9">
                             <h3 class="subheader"> Find bike racks, shops, and events </h3>
                         </div>
                     </div>
                 </div>
             </header>
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <div class="container">
-                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> Menu </a>
-                        <div class="nav-collapse collapse">
-                            <ul class="nav">
-                                <li> <a href="{% url "bikefinder.views.map" %}"> Home </a> </li>
-                                <li class="dropdown"> 
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Neighbourhoods 
-                                        <b class="caret"></b>
-                                    </a>
-                                    <ul class="dropdown-menu"> 
-                                        {% for neighborhood in neighborhoods %}
-                                        <li>
-                                            <a href="{% url "bikefinder.views.neighborhood" neighborhood.name %}"> {{neighborhood.name}} </a>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
+            <nav class="navbar navbar-default" role="navigation">
+            <div class="container">
+                <div class="collapse navbar-collapse ">
+                    <ul class="nav navbar-nav">
+                        <li> <a href="{% url "bikefinder.views.map" %}"> Home </a> </li>
+                        <li class="dropdown"> 
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Neighbourhoods 
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu"> 
+                                {% for neighborhood in neighborhoods %}
+                                <li>
+                                    <a href="{% url "bikefinder.views.neighborhood" neighborhood.name %}"> {{neighborhood.name}} </a>
                                 </li>
-                                <li> <a href="{% url "bikefinder.views.submit" %} "> Submit a Thing</a> </li>
+                                {% endfor %}
                             </ul>
-                        </div>
-                    </div>
+                        </li>
+                        <li> <a href="{% url "bikefinder.views.submit" %} "> Submit a Thing</a> </li>
+                    </ul>
                 </div>
-            </div>
+</div>
+            </nav>
             {% block content %} {% endblock %}
         </body>
-        <script src="{% static "js/jquery-1.9.1.min.js" %}"> </script>
-        <script src="{% static "js/bootstrap.min.js" %}"> </script>
         {% block script %} {% endblock %}
         {% load staticfiles %}
 
