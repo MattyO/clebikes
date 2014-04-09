@@ -94,6 +94,8 @@ def submit(request):
             new_poi.save()
             return redirect("bikefinder.views.submit")
 
+        print dir(a_form.fields['time'])
+        c.update({ "submit_form" : a_form })
         return render(request, "bikefinder/submit.html", c)
 
 

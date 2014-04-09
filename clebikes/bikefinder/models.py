@@ -1,7 +1,10 @@
 from django.db import models
 from django.forms import ModelForm
-from geopy import distance 
+from geopy import distance
 from geopy.point import Point
+from django.contrib.admin import widgets as admin_widgets
+from django.forms import widgets
+
 
 class Location(models.Model):
     latitude = models.FloatField()
@@ -26,12 +29,16 @@ class POI(models.Model):
     address = models.TextField()
     location = models.ForeignKey(Location)
     type = models.ForeignKey(POIType)
+    time = models.DateTimeField(blank=True, null=True)
     is_confirmed = models.BooleanField(default=False)
 
 class POIForm(ModelForm):
         class Meta:
             model = POI
             exclude=('location',)
+            widgets = {
+                    "time": admin_widgets.AdminSplitDateTime(),
+                    }
 
 
 def sort_by_position(list_with_location, points_closest_to):

@@ -2,7 +2,7 @@
 
 {% block content %}
         <div class="container">
-	{{ submit_form.message.errors}}
+	{{ submit_form.errors}}
             <div class="row">
                 <div class="span6">
                     <form class="form" method="POST" action="{% url "bikefinder.views.submit" %}">
@@ -20,6 +20,11 @@
 
                             <label> Type </label>
                             {{submit_form.type}}
+
+                            <div class='time' style="display: none">
+                              <label> Time </label>
+                              {{submit_form.time}}
+                            </div>
 
                             <label> Description </label>
                             {{submit_form.description}}
@@ -54,6 +59,18 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
+            console.log($("#id_type").find(":selected").text());
+            if($("#id_type :selected").text().toLowerCase() == "event"){
+                $(".time").css("display", "block");
+            }
+            $("#id_type").change(function(){
+              if($(this).find(":selected").text().toLowerCase() != "event"){
+                $(".time").css("display", "none");
+              }else{
+                $(".time").css("display", "block");
+              }
+            })
+
             load_map();
 
             $("#findaddress").click(function(){
