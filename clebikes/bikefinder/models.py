@@ -36,9 +36,9 @@ class POIForm(ModelForm):
         class Meta:
             model = POI
             exclude=('location',)
-            widgets = {
-                    "time": admin_widgets.AdminSplitDateTime(),
-                    }
+            #widgets = {
+            #        "time": admin_widgets.AdminSplitDateTime(),
+            #        }
 
 
 def sort_by_position(list_with_location, points_closest_to):

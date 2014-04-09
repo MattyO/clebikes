@@ -80,6 +80,7 @@ def submit(request):
     c = standard_context()
     c.update(csrf(request))
     a_form = POIForm()
+    a_form.fields['time'].widget = forms.TextInput(attrs={"data-format":"yyyy-MM-dd hh:mm:ss"})
     a_form.fields['name'].widget = forms.TextInput(attrs={"class":"span6"})
     a_form.fields['description'].widget = forms.Textarea(attrs={"class":"span6", "rows":"5", "cols":"80"})
     c.update({ "submit_form" : a_form })

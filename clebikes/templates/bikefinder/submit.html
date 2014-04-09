@@ -21,10 +21,14 @@
                             <label> Type </label>
                             {{submit_form.type}}
 
-                            <div class='time' style="display: none">
+                            <div id="datetimepicker1" class="input-append date" style="display: none" >
                               <label> Time </label>
                               {{submit_form.time}}
+                               <span class="add-on">
+                                  <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                              </span>
                             </div>
+<span class="glyphicon glyphicon-search"></span>
 
                             <label> Description </label>
                             {{submit_form.description}}
@@ -44,6 +48,8 @@
                 </div>
             </div>
         </div>
+
+
 {% endblock %}
 
 {% block script %}
@@ -56,18 +62,23 @@
     <script src="{% static "js/map.js" %}"> </script>
     <script src="{% static "js/load_points.js" %}"> </script>
     <script src="{% static "js/geo_finder.js" %}"> </script>
+    
+    <script src="{% static "js/bootstrap-datetimepicker.min.js" %}"> </script>
 
     <script type="text/javascript">
         $(document).ready(function(){
+            
+            $("#datetimepicker1").datetimepicker();
             console.log($("#id_type").find(":selected").text());
             if($("#id_type :selected").text().toLowerCase() == "event"){
-                $(".time").css("display", "block");
+                $("#datetimepicker1").css("display", "block");
             }
             $("#id_type").change(function(){
               if($(this).find(":selected").text().toLowerCase() != "event"){
-                $(".time").css("display", "none");
+                $("#datetimepicker1").css("display", "none");
               }else{
-                $(".time").css("display", "block");
+                $("#datetimepicker1").css("display", "block");
+                $("#datetimepicker1").datetimepicker();
               }
             })
 
