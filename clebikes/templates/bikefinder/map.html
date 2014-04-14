@@ -4,13 +4,13 @@
 <div class="container" ng-controller="bikeAppCtrl">
 
     <div class="row">
-        <div class="span12">
+        <div class="col-md-12">
             <div id="da-map-canvus" class="img-polaroid">
         </div>
     </div>
 
     <div class="row">
-        <div class="span9">
+        <div class="col-md-9">
             <table class="table poi-table">
                 <thead>
                     <th> label </th>
@@ -19,7 +19,7 @@
                     <th> description </th>
                 </thead>
                 <tbody>
-			<tr ng-repeat="point in points"> 
+			<tr ng-repeat="point in points">
 				{% verbatim %}
 				<td> {{$index+1}} </td>
 				<td> {{point.type.name}} </td>
@@ -32,7 +32,7 @@
         </div>
 
 
-        <div class="span3">
+        <div class="col-md-3">
 	<!-- 
             <div class="row">
                 <div class="span3">
@@ -56,15 +56,15 @@
             </div>
 	    --!>
             <div class="row">
-                <div class="span3">
-                    <form>
-                        <fieldset>
-                            <legend> Search  Near Address </legend>
-                                <div class="input-append">
-                                    <input id="txt-address" type="text" class placeholder="Address: City Center" ng-model="searchAddress"/>
-                                    <span id="btn-search" class="add-on btn" ng-click='update()'> Find </span>
-                                </div>
-                        </fieldset>
+                <div class="col-md-12">
+                    <form role="form">
+                      <h4> Search  Near Address </h4>
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input id="txt-address" type="text" class placeholder="Address: City Center" ng-model="searchAddress"/>
+                          <span id="btn-search" class="input-group-addon" ng-click='update()'> Find </span>
+                        </div>
+                      </div>
                     </form>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 from bikefinder.models import POI, Neighborhood
-from changeless.decorators import immutable_list
+from changeless.decorators import immutable_list, fancy_list
 
-@immutable_list
+@fancy_list
 def get_confirmed_pois():
     return POI.objects.filter(is_confirmed__exact=True)
 

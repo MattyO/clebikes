@@ -55,11 +55,13 @@ def map(request):
 def points_of_intrests(request):
 
     points = db.get_confirmed_pois()
+    for point in points: 
+        point.time = point.time.isoformat()
     location = request_helper.get_location(request.GET)
     if location is not  None:
         points = sort_by_position(points, location)
 
-    print to_json(points)
+    #print to_json(points)
     points = {"points" : to_dict(points)}
     return jsonify(points)
 
